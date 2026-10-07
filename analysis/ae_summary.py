@@ -1,4 +1,4 @@
-"""Create the synthetic adverse-event summary for requirement AE-3."""
+"""Create the synthetic adverse-event summary for requirement AE-4."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ def summarize_adverse_events(
     return [
         {column: record[column] for column in OUTPUT_COLUMNS}
         for record in records
-        if record["AESEV"] == "SEVERE"
+        if record["AESEV"] in {"SEVERE", "LIFE THREATENING"}
     ]
 
 

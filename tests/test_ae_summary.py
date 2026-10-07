@@ -14,11 +14,20 @@ class AdverseEventSummaryTests(unittest.TestCase):
         cls.records = load_records(ROOT / "data" / "synthetic_adae.csv")
         cls.summary = summarize_adverse_events(cls.records)
 
-    def test_includes_two_severe_events(self) -> None:
-        self.assertEqual(len(self.summary), 2)
+    def test_includes_four_severe_or_life_threatening_events(self) -> None:
+        self.assertEqual(len(self.summary), 4)
 
-    def test_contains_only_severe_events(self) -> None:
-        self.assertEqual({record["AESEV"] for record in self.summary}, {"SEVERE"})
+    def test_contains_only_severe_or_life_threatening_events(self) -> None:
+        self.assertEqual(
+            {record["AESEV"] for record in self.summary},
+            {"SEVERE", "LIFE THREATENING"},
+        )
+
+    def test_includes_expected_subjects(self) -> None:
+        self.assertEqual(
+            {record["USUBJID"] for record in self.summary},
+            {"003", "004", "006", "007"},
+        )
 
     def test_preserves_output_columns(self) -> None:
         self.assertTrue(self.summary)
